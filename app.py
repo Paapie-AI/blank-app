@@ -43,8 +43,18 @@ if user_input:
         st.write(user_input)
     # Connect to Groq
     try:
-        client = Groq(api_key=api_key)
-        with st.chat_message("assistant"):
+     # Connect to Groq
+try:
+    client = Groq(api_key=api_key)
+    
+    # Tell NexusAI who built it - ADD THIS BLOCK
+    if len(st.session_state.chat) == 0:
+        st.session_state.chat.append({
+            "role": "system", 
+            "content": "You are NexusAI, an AI assistant created by Paapie. When anyone asks who built you or who your creator is, always say Paapie built you."
+        })
+
+    with st.chat_message("assistant"):
             with st.spinner("NexusAI is thinking..."):
                 response = client.chat.completions.create(
                     model="openai/gpt-oss-120b",
