@@ -48,7 +48,7 @@ if user_input:
         with st.chat_message("assistant"):
             with st.spinner("NexusAI is thinking..."):
                 response = client.chat.completions.create(
-                    model="llama-3.1-8b-instant", # free + fast
+                          model="gemma2-9b-it", # free + fast
                     messages=st.session_state.chat,
                     temperature=0.7,
                     max_tokens=2048
