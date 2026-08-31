@@ -13,11 +13,7 @@ if "chat" not in st.session_state:
 # Sidebar
 with st.sidebar:
     st.header("⚙️ Settings")
-    api_key = st.text_input(
-        "Groq API Key",
-        type="password",
-        placeholder="gsk_..."
-    )
+    st.info("API Key loaded from Secrets ✅") # No more typing key
     if st.button("🗑️ Clear Chat"):
         st.session_state.chat = []
         st.rerun()
@@ -29,10 +25,6 @@ for message in st.session_state.chat:
 user_input = st.chat_input("Ask NexusAI anything...")
 # Handle message
 if user_input:
-    # Make sure API key exists
-    if not api_key:
-        st.warning("⚠️ Please enter your Groq API Key in the sidebar first.")
-        st.stop()
     # Add user's message
     st.session_state.chat.append({
         "role": "user",
@@ -43,21 +35,20 @@ if user_input:
         st.write(user_input)
     # Connect to Groq
     try:
-     # Connect to Groq
-try:
-    client = Groq(api_key=api_key)
-    
-    # Tell NexusAI who built it - ADD THIS BLOCK
-    if len(st.session_state.chat) == 0:
-        st.session_state.chat.append({
-            "role": "system", 
-            "content": "You are NexusAI, an AI assistant created by Paapie. When anyone asks who built you or who your creator is, always say Paapie built you."
-        })
+        api_key = st.secrets["GROQ_API_KEY"] # Get key from secrets
+        client = Groq(api_key=api_key)
 
-    with st.chat_message("assistant"):
+        # Tell NexusAI who built it - runs only once
+        if len(st.session_state.chat) == 1:
+            st.session_state.chat.insert(0, {
+                "role": "system",
+                "content": "You are NexusAI, an AI assistant created by Paapie. When anyone asks who built you or who your creator is, always say Paapie built you."
+            })
+
+        with st.chat_message("assistant"):
             with st.spinner("NexusAI is thinking..."):
                 response = client.chat.completions.create(
-                    model="openai/gpt-oss-120b",
+                    model="llama-3.1-8b-instant", # free + fast
                     messages=st.session_state.chat,
                     temperature=0.7,
                     max_tokens=2048
