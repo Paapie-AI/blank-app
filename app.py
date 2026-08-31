@@ -27,7 +27,7 @@ if api_key:
         with st.chat_message("assistant"):
             with st.spinner("NexusAI is thinking..."):
                 chat_completion = client.chat.completions.create(
-                    model="llama-3.1-70b-versatile",
+                    model="llama-3.3-70b-versatile",
                     messages=st.session_state.messages,
                 )
                 reply = chat_completion.choices[0].message.content
