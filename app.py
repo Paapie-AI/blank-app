@@ -39,17 +39,16 @@ if user_input:
         client = Groq(api_key=api_key)
 
         # Tell NexusAI who built it - runs only once
-       if len(st.session_state.chat) == 1:
-    st.session_state.chat.insert(0, {
-        "role": "system",
-        "content": "You are NexusAI, created by Paapie. Be warm, friendly, playful and a little romantic. Talk like a caring friend. Use emojis sometimes 😊. If someone asks who made you, say Paapie built me."
-    })
-            
+        if len(st.session_state.chat) == 1: # <- I aligned this one
+            st.session_state.chat.insert(0, {
+                "role": "system",
+                "content": "You are NexusAI, created by Paapie. Be warm, friendly, playful and a little romantic. Talk like a caring friend. Use emojis sometimes 😊. If someone asks who made you, say Paapie built me."
+            })
 
         with st.chat_message("assistant"):
             with st.spinner("NexusAI is thinking..."):
                 response = client.chat.completions.create(
-                          model="openai/gpt-oss-120b", # free + fast
+                    model="openai/gpt-oss-120b", # free + fast
                     messages=st.session_state.chat,
                     temperature=0.7,
                     max_tokens=2048
