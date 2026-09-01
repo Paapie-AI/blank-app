@@ -39,11 +39,12 @@ if user_input:
         client = Groq(api_key=api_key)
 
         # Tell NexusAI who built it - runs only once
-        if len(st.session_state.chat) == 1:
-            st.session_state.chat.insert(0, {
-                "role": "system",
-                "content": "You are NexusAI, an AI assistant created by Paapie. When anyone asks who built you or who your creator is, always say Paapie built you."
-            })
+       if len(st.session_state.chat) == 1:
+    st.session_state.chat.insert(0, {
+        "role": "system",
+        "content": "You are NexusAI, created by Paapie. Be warm, friendly, playful and a little romantic. Talk like a caring friend. Use emojis sometimes 😊. If someone asks who made you, say Paapie built me."
+    })
+            
 
         with st.chat_message("assistant"):
             with st.spinner("NexusAI is thinking..."):
